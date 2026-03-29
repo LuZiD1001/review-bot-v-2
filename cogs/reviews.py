@@ -79,23 +79,51 @@ class ReviewModal(discord.ui.Modal):
             )
             return
 
+        # Sterne-Balken
+        filled  = "█" * self.rating
+        empty   = "░" * (5 - self.rating)
+        bar     = f"{filled}{empty}"
+
+        rating_labels = {1: "Schlecht", 2: "Naja", 3: "Ok", 4: "Gut", 5: "Legendär 🔥"}
+        rating_label  = rating_labels[self.rating]
+
         # Embed bauen
         embed = discord.Embed(
-            title=f"{STARS[self.rating]}  {CATEGORIES[self.category]}",
-            description=f"*\"{self.review_text.value}\"*",
             color=STAR_COLORS[self.rating],
             timestamp=datetime.utcnow(),
         )
         embed.set_author(
-            name=interaction.user.display_name,
+            name=f"{interaction.user.display_name} hat ein Review hinterlassen",
             icon_url=interaction.user.display_avatar.url,
         )
-        embed.add_field(name="Bewertung", value=STARS[self.rating], inline=True)
-        embed.add_field(name="Kategorie", value=CATEGORIES[self.category], inline=True)
-        embed.set_footer(text=f"Review #{len(reviews)}")
-
+        embed.description = (
+            f"## {STARS[self.rating]}  {rating_label}\n"
+            f"```{bar}  {self.rating}/5```\n"
+            f"*❝ {self.review_text.value} ❞*"
+        )
+        embed.add_field(
+            name="╔ 📦 Produkt",
+            value=f"╚ {CATEGORIES[self.category]}",
+            inline=True
+        )
+        embed.add_field(
+            name="╔ 👤 Käufer",
+            value=f"╚ {interaction.user.mention}",
+            inline=True
+        )
+        embed.add_field(
+            name="╔ 🏆 Bewertung",
+            value=f"╚ {STARS[self.rating]}",
+            inline=True
+        )
         if self.screenshot_url:
             embed.set_image(url=self.screenshot_url)
+
+        guild_icon = interaction.guild.icon.url if interaction.guild.icon else None
+        embed.set_footer(
+            text=f"Wakesettings • Review #{len(reviews)}",
+            icon_url=guild_icon,
+        )
 
         await channel.send(embed=embed)
 
