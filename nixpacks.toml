@@ -1,0 +1,9 @@
+[variables]
+NIXPACKS_PYTHON_VERSION = "3.12"
+
+[phases.build]
+cmds = [
+  "rm -rf /app/.venv",
+  "python -m venv /app/.venv",
+  "pip install --no-cache-dir -r requirements.txt"
+]
