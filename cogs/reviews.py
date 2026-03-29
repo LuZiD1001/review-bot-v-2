@@ -7,7 +7,7 @@ from datetime import datetime
 
 # ── Config ────────────────────────────────────────────────────────────────────
 CUSTOMER_ROLE_NAME  = "Customer"          # Rolle die Reviews schreiben darf
-REVIEW_CHANNEL_NAME = "reviews"           # Channel wo Reviews gepostet werden
+REVIEW_CHANNEL_NAME = "🎉│review"           # Channel wo Reviews gepostet werden
 DATA_FILE           = "data/reviews.json" # Review-Datenbank
 
 CATEGORIES = {
